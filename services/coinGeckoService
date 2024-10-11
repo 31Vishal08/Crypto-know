@@ -1,0 +1,30 @@
+// services/coinGeckoService.js
+const axios = require('axios');
+
+const getCoinData = async (coinIds) => {
+  try {
+    const response = await axios.get(
+      'https://api.coingecko.com/api/v3/coins/markets',
+      {
+        params: {
+          vs_currency: 'usd',
+          ids: coinIds.join(','),
+          order: 'market_cap_desc',
+          per_page: coinIds.length,
+          page: 1,
+          sparkline: false,
+          price_change_percentage: '24h',
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching data from CoinGecko:', error);
+    throw error;
+  }
+};
+
+module.exports = {
+  getCoinData,
+};
